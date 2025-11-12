@@ -158,8 +158,8 @@ class TestAVRename(unittest.TestCase):
             'edge_cases': [
                 ("filelist.txt", None),  # 非视频文件
                 ("dvrt-045.mp4", "DVRT-045"),  # 小写但有效
-                ("1start00398hhb.restored.mp4", None),  # 非标准格式，不应识别
-                ("1start00405hhb.restored.mp4", None),  # 非标准格式，不应识别
+                ("1start00398hhb.restored.mp4", "START00398"),  # 应识别为有效的番号
+                ("1start00405hhb.restored.mp4", "START00405"),  # 应识别为有效的番号
                 ("madoubt.com", None),  # 仅域名，无番号
             ],
         }

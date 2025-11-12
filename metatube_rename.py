@@ -29,7 +29,7 @@ def extract_code(filename):
             std_match = re.search(r'([A-Za-z]{2,10})-(\d{1,6})', part)
             if std_match:
                 alpha_part = std_match.group(1).lower()
-                if alpha_part not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test']:
+                if alpha_part not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test']:
                     return f"{std_match.group(1).upper()}-{std_match.group(2)}"
             
             # 尝试从@分割后的部分直接提取番号
@@ -47,7 +47,7 @@ def extract_code(filename):
         if not standard_match.group(0).startswith('http') and not 'www' in standard_match.group(0):
             # 检查是否是常见的非番号前缀
             alpha_part = standard_match.group(1).lower()
-            if alpha_part not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
+            if alpha_part not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
                 # 只返回主番号部分，忽略分集编号
                 return f"{standard_match.group(1).upper()}-{standard_match.group(2)}"
     
@@ -60,7 +60,7 @@ def extract_code(filename):
         if 'http' not in match_context and 'www' not in match_context and '.com' not in match_context:
             # 增强前缀过滤
             alpha_part = alpha_num_match.group(1).lower()
-            if alpha_part not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
+            if alpha_part not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
                 return f"{alpha_num_match.group(1).upper()}{alpha_num_match.group(2)}"
     
     # 优先级3: 数字在前的格式 (例如 123ABC)，但排除明显不是番号的情况
@@ -68,12 +68,12 @@ def extract_code(filename):
     num_alpha_match = re.search(num_alpha_pattern, base_name)
     if num_alpha_match:
         # 数字在前的情况通常不是标准番号格式，只有在特定情况下才识别
-        # 例如 "123ABC" 可能是番号，但 "1start" 不是
+        # 例如 "123ABC" 可能是番号
         # 检查是否符合典型的番号格式特征
         alpha_part = num_alpha_match.group(2)
         # 增强前缀过滤，排除更多非番号前缀
         if len(alpha_part) >= 2 and len(alpha_part) <= 10 and \
-           alpha_part.lower() not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
+           alpha_part.lower() not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
             return f"{num_alpha_match.group(2).upper()}{num_alpha_match.group(1)}"
     
     # 优先级4: 尝试从文件名中提取所有可能的番号格式，并选择最合适的
@@ -82,8 +82,7 @@ def extract_code(filename):
     
     # 常见的非番号字符串模式
     invalid_patterns = [
-        r'^[0-9]+start',  # 以数字开头后跟start的模式
-        r'^start[0-9]+',  # 以start开头后跟数字的模式
+        # 移除了对start开头的过滤
     ]
     
     # 查找所有可能的番号格式
@@ -115,7 +114,7 @@ def extract_code(filename):
                 if len(parts) >= 2 and parts[0].isalpha() and parts[1].isdigit():
                     alpha_part = parts[0].lower()
                     # 检查是否是常见的非番号前缀
-                    if alpha_part not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
+                    if alpha_part not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
                         if 2 <= len(parts[0]) <= 10 and 1 <= len(parts[1]) <= 6:
                             score += 20
                             all_matches.append((score, f"{parts[0]}-{parts[1]}"))  # 只保留主番号部分
@@ -126,7 +125,7 @@ def extract_code(filename):
                     alpha_part = parts[0] if not parts[0].isdigit() else parts[1]
                     num_part = parts[1] if not parts[0].isdigit() else parts[0]
                     # 检查是否是常见的非番号前缀
-                    if alpha_part.lower() not in ['start', 'end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
+                    if alpha_part.lower() not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
                         if 2 <= len(alpha_part) <= 10 and 1 <= len(num_part) <= 6:
                             score += 15
                             all_matches.append((score, full_match))

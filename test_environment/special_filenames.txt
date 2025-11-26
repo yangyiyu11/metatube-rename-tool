@@ -1,0 +1,48 @@
+# 特殊场景文件命名示例
+
+## 重复文件
+ABF-010.mp4
+ABF-010_copy.mp4
+MIAA-837-C.mp4
+MIAA-837-C_duplicate.mp4
+SONE-785.mp4
+SONE-785_RENAME.mp4
+
+## 相似命名文件
+ABF-010.mp4
+ABF-011.mp4
+ABF-012.mp4
+ABF-013.mp4
+ABF-014.mp4
+
+## 版本号文件
+ABF-010-v1.mp4
+ABF-010-v2.mp4
+MIAA-837-C-final.mp4
+MIAA-837-C-revised.mp4
+SONE-785-ultimate.mp4
+SONE-785-definitive.mp4
+
+## 不同扩展名的相同文件
+ABF-010.mp4
+ABF-010.avi
+MIAA-837-C.mkv
+MIAA-837-C.mp4
+SONE-785.wmv
+SONE-785.mp4
+
+## 大小写变体
+abf-010.mp4
+ABF-010.MP4
+miaa-837-c.mp4
+MIAA-837-C.MP4
+sone-785.mp4
+SONE-785.MP4
+
+## 带空格和特殊字符
+ABF 010.mp4
+ABF-010!.mp4
+MIAA 837 C.mp4
+MIAA-837-C@.mp4
+SONE_785.mp4
+SONE-785#.mp4

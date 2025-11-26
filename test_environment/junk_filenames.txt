@@ -1,0 +1,48 @@
+# 无关垃圾文件命名示例
+
+## 广告文件
+advertisement.pdf
+promo_banner.jpg
+special_offer.docx
+discount_coupon.png
+marketing_material.pptx
+
+## 种子文件
+movie.torrent
+series.torrent
+documentary.torrent
+anime.torrent
+tv_show.torrent
+
+## 临时文件
+temp_file.tmp
+backup_data.bak
+cache_file.cache
+log_file.log
+temporary_doc.txt
+
+## 其他无关文件
+readme_first.txt
+install_instructions.pdf
+setup.exe
+autorun.inf
+license.key
+registration_form.docx
+user_manual.pdf
+help_document.html
+config_backup.cfg
+database_dump.sql
+
+## 系统文件
+system_info.sys
+driver_update.dll
+patch_file.msp
+registry_backup.reg
+boot_loader.bin
+
+## 压缩包
+archive.zip
+data_backup.rar
+project_files.7z
+documents.tar.gz
+media_package.iso

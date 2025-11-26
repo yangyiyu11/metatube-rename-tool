@@ -1,0 +1,69 @@
+# 视频文件命名示例
+
+## 标准连字符格式
+ABF-010.mp4
+MIAA-837-C.mp4
+SVCAO-020-U.mp4
+PRED-467-C.mp4
+IPZZ-120.mp4
+SONE-785.mp4
+HMN-350.mp4
+EBWH-215.mp4
+IDBD-864.mp4
+IPX-726-U.mp4
+
+## 无分隔符格式
+ABC123.mp4
+DEF456-C.mp4
+GHI789-U.mp4
+JKL012.mp4
+MNO345-AI.mp4
+
+## 数字在前格式
+123ABC.mp4
+456DEF-C.mp4
+789GHI-U.mp4
+012JKL.mp4
+345MNO-AI.mp4
+
+## 特殊标记格式
+ABF-016-UC.mp4
+SONE-081-UC.mp4
+ABF-002-UC.mp4
+STARS-979-UC.mp4
+MNGS-006-U.mp4
+
+## 分集格式
+ABF-012-cd1.mp4
+SSIS-722-cd2.mp4
+MIRD-255-1.mp4
+ABF-011-2.mp4
+IPZZ-550-C-cd3.mp4
+
+## 复杂格式
+PRED-444-uncensored-nyap2p.com.mp4
+LULU-330-uncensored-nyap2p.com.mp4
+MIRD-254-AI.mp4
+SONE-745-AI.mp4
+IPZZ-460_CH-nyap2p.com.mp4
+
+## 带分辨率和编码格式
+ABC-123-1080p.mp4
+DEF-456-4k-h265.mp4
+GHI-789-720p-x264.mp4
+JKL-012-2160p-hevc.mp4
+MNO-345-480p-avc.mp4
+
+## 带质量标签
+PQR-678-DVD.mp4
+STU-901-BluRay.mp4
+VWX-234-WEB.mp4
+YZA-567-REMUX.mp4
+BCD-123-BLUERAY.mp4
+
+## 混合格式
+HIJ-789-C-U-1080p-H264.mp4
+IJK-012-U-4K-H265-BluRay.mp4
+KLM-789-x264.mp4
+LMN-012-x265.mp4
+STU-789-C-1080P-H264.mp4

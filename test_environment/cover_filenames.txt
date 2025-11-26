@@ -1,0 +1,64 @@
+# 专辑封面文件命名示例（与视频文件对应）
+
+## 标准连字符格式
+ABF-010.jpg
+MIAA-837-C.png
+SVCAO-020-U.jpg
+PRED-467-C.png
+IPZZ-120.jpg
+
+## 无分隔符格式
+ABC123.png
+DEF456-C.jpg
+GHI789-U.png
+JKL012.jpg
+MNO345-AI.png
+
+## 数字在前格式
+123ABC.jpg
+456DEF-C.png
+789GHI-U.jpg
+012JKL.png
+345MNO-AI.jpg
+
+## 特殊标记格式
+ABF-016-UC.png
+SONE-081-UC.jpg
+ABF-002-UC.png
+STARS-979-UC.jpg
+MNGS-006-U.png
+
+## 分集格式
+ABF-012-cd1.jpg
+SSIS-722-cd2.png
+MIRD-255-1.jpg
+ABF-011-2.png
+IPZZ-550-C-cd3.jpg
+
+## 复杂格式
+PRED-444-uncensored-nyap2p.com.png
+LULU-330-uncensored-nyap2p.com.jpg
+MIRD-254-AI.png
+SONE-745-AI.jpg
+IPZZ-460_CH-nyap2p.com.png
+
+## 带分辨率和编码格式
+ABC-123-1080p.jpg
+DEF-456-4k-h265.png
+GHI-789-720p-x264.jpg
+JKL-012-2160p-hevc.png
+MNO-345-480p-avc.jpg
+
+## 带质量标签
+PQR-678-DVD.png
+STU-901-BluRay.jpg
+VWX-234-WEB.png
+YZA-567-REMUX.jpg
+BCD-123-BLUERAY.png
+
+## 混合格式
+HIJ-789-C-U-1080p-H264.jpg
+IJK-012-U-4K-H265-BluRay.png
+KLM-789-x264.jpg
+LMN-012-x265.png
+STU-789-C-1080P-H264.jpg

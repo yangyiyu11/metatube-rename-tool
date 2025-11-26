@@ -1,0 +1,64 @@
+# 字幕文件命名示例（与视频文件对应）
+
+## 标准连字符格式
+ABF-010.srt
+MIAA-837-C.ass
+SVCAO-020-U.srt
+PRED-467-C.sub
+IPZZ-120.srt
+
+## 无分隔符格式
+ABC123.ass
+DEF456-C.srt
+GHI789-U.sub
+JKL012.srt
+MNO345-AI.ass
+
+## 数字在前格式
+123ABC.sub
+456DEF-C.srt
+789GHI-U.ass
+012JKL.sub
+345MNO-AI.srt
+
+## 特殊标记格式
+ABF-016-UC.ass
+SONE-081-UC.sub
+ABF-002-UC.srt
+STARS-979-UC.ass
+MNGS-006-U.sub
+
+## 分集格式
+ABF-012-cd1.srt
+SSIS-722-cd2.ass
+MIRD-255-1.sub
+ABF-011-2.srt
+IPZZ-550-C-cd3.ass
+
+## 复杂格式
+PRED-444-uncensored-nyap2p.com.srt
+LULU-330-uncensored-nyap2p.com.ass
+MIRD-254-AI.sub
+SONE-745-AI.srt
+IPZZ-460_CH-nyap2p.com.ass
+
+## 带分辨率和编码格式
+ABC-123-1080p.srt
+DEF-456-4k-h265.ass
+GHI-789-720p-x264.sub
+JKL-012-2160p-hevc.srt
+MNO-345-480p-avc.ass
+
+## 带质量标签
+PQR-678-DVD.srt
+STU-901-BluRay.ass
+VWX-234-WEB.sub
+YZA-567-REMUX.srt
+BCD-123-BLUERAY.ass
+
+## 混合格式
+HIJ-789-C-U-1080p-H264.sub
+IJK-012-U-4K-H265-BluRay.srt
+KLM-789-x264.ass
+LMN-012-x265.sub
+STU-789-C-1080P-H264.srt

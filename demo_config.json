@@ -1,0 +1,27 @@
+{
+    "naming_rules": {
+        "code_format": "uppercase_with_hyphen",
+        "separator": "-",
+        "order": [
+            "code",
+            "markers",
+            "episode",
+            "resolution",
+            "quality"
+        ],
+        "episode_format": "cd{episode}"
+    },
+    "file_extensions": [
+        ".mp4",
+        ".avi",
+        ".mkv"
+    ],
+    "exclude_patterns": [
+        "sample",
+        "preview"
+    ],
+    "advanced_options": {
+        "max_filename_length": 100,
+        "conflict_resolution": "suffix"
+    }
+}

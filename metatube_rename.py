@@ -330,9 +330,9 @@ def extract_quality_tags(filename: str) -> List[str]:
 
 def normalize_filename(filename: str, custom_rules: dict = None) -> str:
     """
-    根据命名规则规范化文件名
+    根据提取的信息规范化文件名
     """
-    base_name = os.path.splitext(filename)[0]
+    # 提取文件扩展名
     extension = os.path.splitext(filename)[1]
     
     # 提取番号
@@ -349,8 +349,28 @@ def normalize_filename(filename: str, custom_rules: dict = None) -> str:
     # 提取质量标签
     quality_tags = extract_quality_tags(filename)
     
-    # 构建新的文件名
-    new_name_parts = [code]
+    # 使用自定义规则或默认规则
+    if custom_rules and "naming_rules" in custom_rules:
+        naming_rules = custom_rules["naming_rules"]
+        code_format = naming_rules.get("code_format", "uppercase_with_hyphen")
+        separator = naming_rules.get("separator", "-")
+        order = naming_rules.get("order", ["code", "markers", "episode", "resolution", "quality"])
+        episode_format = naming_rules.get("episode_format", "cd{episode}")
+    else:
+        # 默认规则
+        code_format = "uppercase_with_hyphen"
+        separator = "-"
+        order = ["code", "markers", "episode", "resolution", "quality"]
+        episode_format = "cd{episode}"
+    
+    # 根据指定格式处理番号
+    if code_format == "uppercase_no_hyphen":
+        code = code.replace("-", "")
+    elif code_format == "lowercase_with_hyphen":
+        code = code.lower()
+    elif code_format == "lowercase_no_hyphen":
+        code = code.replace("-", "").lower()
+    # 默认为 "uppercase_with_hyphen"，不需要改变
     
     # 添加特殊标记（按优先级排序）
     ordered_markers = []
@@ -368,25 +388,40 @@ def normalize_filename(filename: str, custom_rules: dict = None) -> str:
     # 其他标记
     ordered_markers.extend(special_markers)
     
-    # 添加所有标记
-    for marker in ordered_markers:
-        new_name_parts.append(f'-{marker}')
+    # 构建各部分
+    parts = {
+        "code": code,
+        "markers": separator.join([f'{marker}' for marker in ordered_markers]),
+        "episode": episode_format.replace("{episode}", episode_num) if episode_num else "",
+        "resolution": separator.join(resolution_codec),
+        "quality": separator.join(quality_tags)
+    }
     
-    # 添加分集信息
-    if episode_num:
-        new_name_parts.append(f'-cd{episode_num}')
-    
-    # 添加分辨率和编码信息
-    for item in resolution_codec:
-        new_name_parts.append(f'-{item}')
-    
-    # 添加质量标签
-    for tag in quality_tags:
-        new_name_parts.append(f'-{tag}')
+    # 根据顺序构建文件名
+    new_name_parts = []
+    for part_name in order:
+        if part_name in parts and parts[part_name]:
+            # 特殊处理code部分，不需要分隔符前缀
+            if part_name == "code":
+                new_name_parts.append(parts[part_name])
+            else:
+                new_name_parts.append(f'{separator}{parts[part_name]}')
     
     # 组合所有部分
     base_new_name = ''.join(new_name_parts)
     new_name = f"{base_new_name}{extension}"
+    
+    # 应用高级选项
+    if custom_rules and "advanced_options" in custom_rules:
+        advanced_options = custom_rules["advanced_options"]
+        max_length = advanced_options.get("max_filename_length", 255)
+        if len(new_name) > max_length:
+            # 截断文件名，保留扩展名
+            ext_len = len(extension)
+            name_len = max_length - ext_len
+            if name_len > 0:
+                base_name = base_new_name[:name_len]
+                new_name = f"{base_name}{extension}"
     
     return new_name
 
@@ -400,6 +435,19 @@ def rename_files(directory: str, dry_run: bool = False, recursive: bool = False,
     if not dir_path.is_dir():
         print(f"错误: {directory} 不是有效的目录")
         return
+    
+    # 获取文件扩展名过滤器
+    allowed_extensions = None
+    exclude_patterns = None
+    conflict_resolution = "suffix"  # 默认冲突解决策略
+    
+    if custom_rules:
+        if "file_extensions" in custom_rules:
+            allowed_extensions = set(custom_rules["file_extensions"])
+        if "exclude_patterns" in custom_rules:
+            exclude_patterns = custom_rules["exclude_patterns"]
+        if "advanced_options" in custom_rules:
+            conflict_resolution = custom_rules["advanced_options"].get("conflict_resolution", "suffix")
     
     # 收集需要处理的文件
     files_to_process = []
@@ -415,6 +463,23 @@ def rename_files(directory: str, dry_run: bool = False, recursive: bool = False,
     
     for file_path in files_to_process:
         original_name = file_path.name
+        
+        # 检查文件扩展名是否在允许列表中
+        if allowed_extensions and file_path.suffix.lower() not in allowed_extensions:
+            print(f"跳过: {original_name} (文件类型不在允许列表中)")
+            continue
+        
+        # 检查是否匹配排除模式
+        if exclude_patterns:
+            should_exclude = False
+            for pattern in exclude_patterns:
+                if pattern.lower() in original_name.lower():
+                    should_exclude = True
+                    break
+            if should_exclude:
+                print(f"跳过: {original_name} (匹配排除模式)")
+                continue
+        
         code = extract_code(original_name)
         
         if code:
@@ -422,22 +487,29 @@ def rename_files(directory: str, dry_run: bool = False, recursive: bool = False,
             new_name = normalize_filename(original_name, custom_rules)
             
             # 如果文件名已经是规范格式，则跳过
-            expected_name = normalize_filename(original_name, custom_rules)
-            if file_path.name == expected_name:
+            if file_path.name == new_name:
                 print(f"跳过: {original_name} (文件名已经符合规范)")
                 continue
             
             new_path = file_path.parent / new_name
             
-            # 避免覆盖现有文件
-            counter = 1
-            original_new_path = new_path
-            while new_path.exists() and new_path != file_path:
-                name_parts = os.path.splitext(new_name)
-                counter_suffix = f"_{counter}"
-                new_name = f"{name_parts[0]}{counter_suffix}{name_parts[1]}"
-                new_path = file_path.parent / new_name
-                counter += 1
+            # 处理文件名冲突
+            if new_path.exists() and new_path != file_path:
+                if conflict_resolution == "skip":
+                    print(f"跳过: {original_name} (目标文件已存在)")
+                    continue
+                elif conflict_resolution == "overwrite":
+                    # 将覆盖现有文件，继续执行
+                    pass
+                else:  # 默认为 "suffix"
+                    counter = 1
+                    original_new_path = new_path
+                    while new_path.exists() and new_path != file_path:
+                        name_parts = os.path.splitext(new_name)
+                        counter_suffix = f"_{counter}"
+                        new_name = f"{name_parts[0]}{counter_suffix}{name_parts[1]}"
+                        new_path = file_path.parent / new_name
+                        counter += 1
             
             # 如果文件名已经正确或者是同一个文件，则跳过
             if new_path == file_path:
@@ -485,7 +557,9 @@ def generate_config_template():
                 "quality_tags": True      # 是否保留质量标签
             },
             "separator": "-",             # 分隔符
-            "order": ["code", "markers", "episode", "resolution", "quality"]  # 组成部分顺序
+            "order": ["code", "markers", "episode", "resolution", "quality"],  # 组成部分顺序
+            "episode_format": "cd{episode}",  # 分集格式: cd{episode}, part{episode}, ep{episode}, {episode}
+            "custom_rules": []  # 自定义规则列表
         },
         "file_extensions": [".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v", ".mpg", ".mpeg", ".3gp", ".3g2", ".mxf", ".ts", ".m2ts", ".vob", ".ifo", ".bup"],
         "exclude_patterns": ["sample", "preview", "trailer", "extra", "bonus"],
@@ -498,6 +572,11 @@ def generate_config_template():
             "chs": "c",
             "cht": "c",
             "cn": "c"
+        },
+        "advanced_options": {
+            "preserve_original_filename": False,  # 是否保留原始文件名作为参考
+            "max_filename_length": 255,  # 最大文件名长度
+            "conflict_resolution": "suffix"  # 冲突解决策略: suffix(添加后缀), overwrite(覆盖), skip(跳过)
         }
     }
     
@@ -513,7 +592,7 @@ def main():
     parser.add_argument('-d', '--dry-run', action='store_true', help='仅显示将要执行的重命名操作，不实际执行')
     parser.add_argument('-r', '--recursive', action='store_true', help='递归处理子目录')
     parser.add_argument('-p', '--preserve', action='store_true', help='保留原始文件（复制并重命名）')
-    parser.add_argument('--config', type=str, help='配置文件路径')
+    parser.add_argument('-c', '--config', type=str, help='配置文件路径')
     parser.add_argument('--generate-config', action='store_true', help='生成配置文件模板')
     
     args = parser.parse_args()
@@ -529,6 +608,13 @@ def main():
         try:
             with open(args.config, 'r', encoding='utf-8') as f:
                 custom_rules = json.load(f)
+            print(f"已加载配置文件: {args.config}")
+        except FileNotFoundError:
+            print(f"错误: 配置文件 '{args.config}' 不存在")
+            return
+        except json.JSONDecodeError as e:
+            print(f"错误: 配置文件格式无效: {e}")
+            return
         except Exception as e:
             print(f"读取配置文件失败: {e}")
             return

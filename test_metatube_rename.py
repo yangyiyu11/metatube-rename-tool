@@ -16,17 +16,17 @@ import importlib.util
 import sys
 
 # 动态导入包含连字符的模块
-spec = importlib.util.spec_from_file_location("metatube_rename_qw", "metatube_rename-qw.py")
-metatube_rename_qw = importlib.util.module_from_spec(spec)
-sys.modules["metatube_rename_qw"] = metatube_rename_qw
-spec.loader.exec_module(metatube_rename_qw)
+spec = importlib.util.spec_from_file_location("metatube_rename", "metatube_rename.py")
+metatube_rename = importlib.util.module_from_spec(spec)
+sys.modules["metatube_rename"] = metatube_rename
+spec.loader.exec_module(metatube_rename)
 
 # 从模块中导入所需的函数
-extract_code = metatube_rename_qw.extract_code
-extract_special_markers = metatube_rename_qw.extract_special_markers
-extract_resolution_and_codec = metatube_rename_qw.extract_resolution_and_codec
-extract_quality_tags = metatube_rename_qw.extract_quality_tags
-normalize_filename = metatube_rename_qw.normalize_filename
+extract_code = metatube_rename.extract_code
+extract_special_markers = metatube_rename.extract_special_markers
+extract_resolution_and_codec = metatube_rename.extract_resolution_and_codec
+extract_quality_tags = metatube_rename.extract_quality_tags
+normalize_filename = metatube_rename.normalize_filename
 
 
 class TestSpecialMarkersQW(unittest.TestCase):
@@ -296,7 +296,7 @@ class TestFullRenameProcessQW(unittest.TestCase):
         # 这里只是确保函数不会抛出异常
         try:
             # 导入rename_files函数
-            rename_files = metatube_rename_qw.rename_files
+            rename_files = metatube_rename.rename_files
             rename_files(self.test_dir.name, dry_run=True)
             rename_success = True
         except Exception as e:

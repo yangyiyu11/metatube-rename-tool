@@ -16,6 +16,14 @@
 
 ## 版本更新
 
+### v2.1 更新内容
+
+1. 增加了对自定义重命名规则的支持
+2. 支持通过配置文件控制文件名的各个组成部分
+3. 支持自定义番号格式、分隔符、顺序等
+4. 支持文件扩展名过滤和排除模式
+5. 支持高级选项如最大文件名长度和冲突解决策略
+
 ### v2.0 更新内容
 
 1. 重构了番号提取算法，提高了准确性
@@ -30,7 +38,7 @@
 
 - [x] 增加对常见番号格式的支持
 - [ ] 增加对其他番号格式的支持
-- [ ] 增加对自定义重命名规则的支持
+- [x] 增加对自定义重命名规则的支持
 
 ## 安装
 
@@ -55,7 +63,67 @@ python metatube_rename.py -d /path/to/directory
 
 # 组合使用 - 递归处理并模拟运行
 python metatube_rename.py -rd /path/to/directory
+
+# 使用配置文件
+python metatube_rename.py -c config.json /path/to/directory
 ```
+
+## 自定义重命名规则
+
+该工具支持通过配置文件来自定义重命名规则。您可以控制文件名的各个组成部分的格式、顺序以及其他高级选项。
+
+### 配置文件示例
+
+```json
+{
+    "naming_rules": {
+        "code_format": "uppercase_with_hyphen",
+        "separator": "-",
+        "order": ["code", "markers", "episode", "resolution", "quality"],
+        "episode_format": "cd{episode}"
+    },
+    "file_extensions": [".mp4", ".avi", ".mkv", ".wmv", ".flv", ".mov"],
+    "exclude_patterns": ["sample", "preview"],
+    "custom_replacements": {
+        "4k": "2160p",
+        "fullhd": "1080p"
+    },
+    "advanced_options": {
+        "preserve_original_filename": false,
+        "max_filename_length": 255,
+        "conflict_resolution": "suffix"
+    }
+}
+```
+
+### 配置选项说明
+
+#### naming_rules
+- `code_format`: 番号格式
+  - `uppercase_with_hyphen`: 大写带连字符（默认）
+  - `uppercase_no_hyphen`: 大写无连字符
+  - `lowercase_with_hyphen`: 小写带连字符
+  - `lowercase_no_hyphen`: 小写无连字符
+- `separator`: 各部分之间的分隔符，默认为 "-"
+- `order`: 文件名各部分的顺序，默认为 ["code", "markers", "episode", "resolution", "quality"]
+- `episode_format`: 分集文件格式，默认为 "cd{episode}"
+
+#### file_extensions
+允许处理的文件扩展名列表，默认处理所有文件。
+
+#### exclude_patterns
+要排除的文件名模式列表，匹配这些模式的文件将被跳过。
+
+#### custom_replacements
+自定义文本替换规则，在重命名之前应用。
+
+#### advanced_options
+- `preserve_original_filename`: 是否保留原始文件名，默认为 false
+- `max_filename_length`: 最大文件名长度，默认为 255
+- `conflict_resolution`: 文件名冲突解决策略
+  - `suffix`: 添加数字后缀（默认）
+  - `overwrite`: 覆盖现有文件
+  - `skip`: 跳过重命名
 
 ## 工作原理
 

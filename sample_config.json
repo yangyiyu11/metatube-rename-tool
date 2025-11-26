@@ -1,0 +1,33 @@
+{
+    "naming_rules": {
+        "code_format": "uppercase_with_hyphen",
+        "markers": {
+            "chinese_subtitle": "C",
+            "uncensored": "U",
+            "resolution": true,
+            "codec": true,
+            "quality_tags": true
+        },
+        "separator": "-",
+        "order": ["code", "markers", "episode", "resolution", "quality"],
+        "episode_format": "cd{episode}",
+        "custom_rules": []
+    },
+    "file_extensions": [".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v", ".mpg", ".mpeg", ".3gp", ".3g2", ".mxf", ".ts", ".m2ts", ".vob", ".ifo", ".bup"],
+    "exclude_patterns": ["sample", "preview", "trailer", "extra", "bonus"],
+    "custom_replacements": {
+        "ai": "u",
+        "uncensored": "u",
+        "uncen": "u",
+        "uc": "u",
+        "ch": "c",
+        "chs": "c",
+        "cht": "c",
+        "cn": "c"
+    },
+    "advanced_options": {
+        "preserve_original_filename": false,
+        "max_filename_length": 255,
+        "conflict_resolution": "suffix"
+    }
+}

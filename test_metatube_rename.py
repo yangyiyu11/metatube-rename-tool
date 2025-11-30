@@ -113,7 +113,7 @@ class TestAVRename(unittest.TestCase):
                 ("hhd800.com@HUNTC-296-C.mp4", "HUNTC-296"),
                 ("hhd800.com@VEC-738.mp4", "VEC-738"),
                 ("hhd800.com@KSAT-094.mp4", "KSAT-094"),
-                ("dxxdom.com@DVMM275.mp4", "DVMM275"),
+                ("dxxdom.com@DVMM275.mp4", "DVMM-275"),
                 ("@jnty60.app_SDAM-093.mp4", "SDAM-093"),
             ],
             
@@ -158,8 +158,8 @@ class TestAVRename(unittest.TestCase):
             'edge_cases': [
                 ("filelist.txt", None),  # 非视频文件
                 ("dvrt-045.mp4", "DVRT-045"),  # 小写但有效
-                ("1start00398hhb.restored.mp4", "START00398"),  # 应识别为有效的番号
-                ("1start00405hhb.restored.mp4", "START00405"),  # 应识别为有效的番号
+                ("1start00398hhb.restored.mp4", "START-00398"),  # 应识别为有效的番号
+                ("1start00405hhb.restored.mp4", "START-00405"),  # 应识别为有效的番号
                 ("madoubt.com", None),  # 仅域名，无番号
             ],
         }

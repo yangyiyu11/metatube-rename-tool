@@ -35,8 +35,10 @@ def extract_code(filename):
             # 尝试从@分割后的部分直接提取番号
             clean_part = re.sub(r'[^A-Za-z0-9]', '', part)
             # 检查是否符合基本的番号格式：字母+数字
-            if re.match(r'^[A-Za-z]{2,10}[0-9]{1,6}$', clean_part, re.IGNORECASE):
-                return clean_part.upper()
+            match = re.match(r'^([A-Za-z]{2,10})([0-9]{1,6})$', clean_part, re.IGNORECASE)
+            if match:
+                # 转换为标准格式（添加连字符）
+                return f"{match.group(1).upper()}-{match.group(2)}"
     
     # 定义不同优先级的模式
     # 优先级1: 带连字符的标准格式，可能带有分集编号 (例如 ABC-123 或 ABC-123-1)
@@ -61,7 +63,8 @@ def extract_code(filename):
             # 增强前缀过滤
             alpha_part = alpha_num_match.group(1).lower()
             if alpha_part not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
-                return f"{alpha_num_match.group(1).upper()}{alpha_num_match.group(2)}"
+                # 转换为标准格式（添加连字符）
+                return f"{alpha_num_match.group(1).upper()}-{alpha_num_match.group(2)}"
     
     # 优先级3: 数字在前的格式 (例如 123ABC)，但排除明显不是番号的情况
     num_alpha_pattern = r'^(\d{1,6})([A-Za-z]{2,10})'
@@ -128,7 +131,8 @@ def extract_code(filename):
                     if alpha_part.lower() not in ['end', 'part', 'vol', 'img', 'pic', 'file', 'doc', 'test', 'disk', 'disc']:
                         if 2 <= len(alpha_part) <= 10 and 1 <= len(num_part) <= 6:
                             score += 15
-                            all_matches.append((score, full_match))
+                            # 转换为标准格式（添加连字符）
+                        all_matches.append((score, f"{parts[0]}-{parts[1]}"))
     
     # 如果有多个匹配，选择得分最高的
     if all_matches:
